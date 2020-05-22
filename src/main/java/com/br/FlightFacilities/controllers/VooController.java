@@ -2,7 +2,6 @@ package com.br.FlightFacilities.controllers;
 
 import com.br.FlightFacilities.models.Voo;
 import com.br.FlightFacilities.services.VooService;
-import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +46,7 @@ public class VooController {
     }
 
     @PutMapping("/{id}")
-    public Voo atualizarVoo(@PathVariable Integer id, @RequestBody Voo voo) throws ObjectNotFoundException {
+    public Voo atualizarVoo(@PathVariable Integer id, @RequestBody Voo voo){
         voo.setId(id);
         Voo vooObjeto = vooService.atualizarVoo(voo);
         return vooObjeto;
