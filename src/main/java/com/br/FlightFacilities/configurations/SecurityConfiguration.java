@@ -1,6 +1,5 @@
 package com.br.FlightFacilities.configurations;
 
-
 import com.br.FlightFacilities.security.FiltroAutenticacaoJWT;
 import com.br.FlightFacilities.security.FiltroAutorizacaoJWT;
 import com.br.FlightFacilities.security.JWTUtil;
@@ -32,12 +31,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     /*
     COLOCAR ENDPOINTS LIBERADOS NOS ARRAYS ABAIXO
      */
-    private static final String[] PUBLIC_MATCHERS_GET = {
-            "/aberto"
-    };
-
     private static final String[] PUBLIC_MATCHERS_POST = {
             "/usuarios"
+    };
+
+    private static final String[] PUBLIC_MATCHERS_GET = {
+
     };
 
     @Override
