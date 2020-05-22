@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface VooRepository extends CrudRepository<Voo, Integer> {
 
-    Optional<Voo> findByOrigemAndDestino(String origem, String destino);
+    Iterable<Voo> findByOrigemAndDestino(String origem, String destino);
 
 }
