@@ -2,6 +2,7 @@ package com.br.FlightFacilities.services;
 
 import com.br.FlightFacilities.models.Simulacao;
 import com.br.FlightFacilities.models.Voo;
+import com.br.FlightFacilities.repositories.VooRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,11 @@ import java.util.Optional;
 public class SimulacaoService {
 
     @Autowired
-    VooServices vooServices;
+    VooRepository vooRepository;
 
     public Optional<Voo> consultarVoo(Simulacao simulacao) throws ObjectNotFoundException {
 
-        Optional<Voo> vooOptional = vooServices.buscarVoo(simulacao.getAeporigem(),simulacao.getAepdestino());
+        Optional<Voo> vooOptional = vooRepository.findByOrigemAndDestino(simulacao.getAeporigem(),simulacao.getAepdestino());
 
         if (vooOptional.isPresent()){
             return vooOptional;
