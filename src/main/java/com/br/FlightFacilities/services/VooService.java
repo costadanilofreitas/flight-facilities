@@ -2,7 +2,7 @@ package com.br.FlightFacilities.services;
 
 import com.br.FlightFacilities.models.Voo;
 import com.br.FlightFacilities.repositories.VooRepository;
-import javassist.tools.rmi.ObjectNotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class VooService {
             Voo vooObjeto = vooRepository.save(voo);
             return vooObjeto;
         }
-        throw new ObjectNotFoundException("O voo não foi encontrato");
+        throw new ObjectNotFoundException(Voo.class, "O voo não foi encontrato");
     }
 
     public void deletarVoo(Voo voo){
