@@ -22,7 +22,7 @@ public class EmpresaController {
         return empresas;
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public Empresa buscarEmpresaPorId(@PathVariable int id) throws ObjectNotFoundException {
         Empresa empresa = empresaService.buscarPorId(id);
         return empresa;
@@ -35,7 +35,7 @@ public class EmpresaController {
         return empresa;
     }
 
-    @PutMapping("/id")
+    @PutMapping("/{id}")
     public Empresa alterarEmpresa(@PathVariable int id, @RequestBody Empresa empresa) throws ObjectNotFoundException
     {
         Empresa emprasaAux = empresaService.buscarPorId(id);
@@ -48,7 +48,7 @@ public class EmpresaController {
         return empresaobj;
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public Optional<Empresa> deletarEmpresa(@PathVariable int id) throws ObjectNotFoundException {
 
         Optional<Empresa>  empresaaux = empresaService.deletarEmpresa(id);

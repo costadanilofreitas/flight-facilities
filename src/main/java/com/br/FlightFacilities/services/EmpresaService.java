@@ -38,7 +38,7 @@ public class EmpresaService {
     public Empresa atualizarEmpresa(Empresa empresa) throws ObjectNotFoundException {
         Optional<Empresa> empresaOptional = empresaRepository.findById(empresa.getIdempresa());
         if (empresaOptional.isPresent()){
-            Empresa empresaObjeto = empresaRepository.save(empresa);
+            Empresa empresaObjeto = empresaRepository.(empresa);
             return empresaObjeto;
         }
         throw new ObjectNotFoundException(Empresa.class,"empresa não cadastrada");
