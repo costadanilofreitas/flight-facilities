@@ -2,7 +2,7 @@ package com.br.FlightFacilities.services;
 
 import com.br.FlightFacilities.models.Empresa;
 import com.br.FlightFacilities.repositories.EmpresaRepository;
-import javassist.tools.rmi.ObjectNotFoundException;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class EmpresaService {
           return  empresaobj;
         }
 
-        throw new ObjectNotFoundException("empresa não cadastrada");
+        throw new ObjectNotFoundException(Empresa.class,"empresa não cadastrada");
     }
 
     public Empresa atualizarEmpresa(Empresa empresa) throws ObjectNotFoundException {
@@ -41,8 +41,16 @@ public class EmpresaService {
             Empresa empresaObjeto = empresaRepository.save(empresa);
             return empresaObjeto;
         }
-        throw new ObjectNotFoundException("empresa não cadastrada");
+        throw new ObjectNotFoundException(Empresa.class,"empresa não cadastrada");
 
     }
 
+    public Optional<Empresa> deletarEmpresa(int id) throws ObjectNotFoundException {
+        Optional<Empresa> empresaOptional = empresaRepository.findById(id);
+        if (empresaOptional.isPresent()){
+            empresaRepository.deleteById(id);
+            return empresaOptional;
+        }
+        throw new ObjectNotFoundException(Empresa.class,"empresa não cadastrada");
+    }
 }

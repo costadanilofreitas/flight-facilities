@@ -1,4 +1,4 @@
-package com.br.FlightFacilities;
+package com.br.FlightFacilities.services;
 
 public class EmpresaTests {
 }
