@@ -1,4 +1,4 @@
 package com.br.FlightFacilities.repositories;
 
-public class teste {
+public interface EmpresaRepository {
 }
