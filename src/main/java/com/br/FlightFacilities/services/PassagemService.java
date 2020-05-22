@@ -1,7 +1,9 @@
 package com.br.FlightFacilities.services;
 
 import com.br.FlightFacilities.models.Passagem;
+import com.br.FlightFacilities.models.Voo;
 import com.br.FlightFacilities.repositories.PassagemRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +52,7 @@ public class PassagemService {
                 passagem.setNumeroAssento(passagemData.getNumeroAssento());
             }
         }else{
-            return new Passagem();
+            throw new ObjectNotFoundException(Passagem.class, "Passagem não encontrada");
         }
         return passagemRepository.save(passagem);
     }

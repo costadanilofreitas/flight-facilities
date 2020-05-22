@@ -43,12 +43,12 @@ public class PassagemController {
     @PutMapping("/{id}")
     public Passagem atualizarPassagem(@PathVariable Integer id, @RequestBody Passagem passagem){
         passagem.setId(id);
-        Passagem passagemRetorno = passagemService.atualizarPassagem(passagem);
 
-        if(passagemRetorno.getId() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }else{
+        try{
+            Passagem passagemRetorno = passagemService.atualizarPassagem(passagem);
             return passagemRetorno;
+        }catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }
 
