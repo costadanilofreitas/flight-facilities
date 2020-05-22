@@ -1,11 +1,5 @@
 package com.br.FlightFacilities.controllers;
 
-<<<<<<< HEAD
-import com.br.FlightFacilities.services.VooService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-=======
 import com.br.FlightFacilities.models.Voo;
 import com.br.FlightFacilities.services.VooService;
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -19,7 +13,10 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
->>>>>>> 549be95a474ecce91265c544140babc8aa7fb587
+import com.br.FlightFacilities.services.VooService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/voos")
@@ -28,8 +25,6 @@ public class VooController {
     @Autowired
     private VooService vooService;
 
-<<<<<<< HEAD
-=======
     @GetMapping
     public Iterable<Voo> buscarTodosVoos(){
         return vooService.buscarTodosVoos();
@@ -68,6 +63,4 @@ public class VooController {
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
 
     }
->>>>>>> 549be95a474ecce91265c544140babc8aa7fb587
-
 }
