@@ -13,6 +13,10 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.br.FlightFacilities.services.VooService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/voos")
@@ -59,5 +63,4 @@ public class VooController {
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
 
     }
-
 }
