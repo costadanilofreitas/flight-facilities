@@ -12,15 +12,15 @@ import java.util.Optional;
 public class SimulacaoService {
 
     @Autowired
-    VooServices vooServices;
+    VooRepository vooRepository;
 
     public Optional<Voo> consultarVoo(Simulacao simulacao) throws ObjectNotFoundException {
 
-        Optional<Voo> vooOptional = vooServices.buscarVoo(simulacao.getAeporigem(),simulacao.getAepdestino());
+        Optional<Voo> vooOptional = vooRepository.findByOrigemAndDestino(simulacao.getAeporigem(),simulacao.getAepdestino());
 
         if (vooOptional.isPresent()){
             return vooOptional;
         }
         throw new ObjectNotFoundException(Voo.class, "Voo não encontrado");
     }
- }
+}

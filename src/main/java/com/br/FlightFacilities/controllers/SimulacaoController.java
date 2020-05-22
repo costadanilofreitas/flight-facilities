@@ -2,6 +2,7 @@ package com.br.FlightFacilities.controllers;
 
 import com.br.FlightFacilities.models.Simulacao;
 import com.br.FlightFacilities.models.Voo;
+import com.br.FlightFacilities.services.SimulacaoService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,12 @@ import javax.validation.Valid;
 @RequestMapping("/simulacao")
 public class SimulacaoController {
     @Autowired
-    private SimulacaoServices simulacaoServices;
+    private SimulacaoService simulacaoService;
 
     @PutMapping()
     public ResponseEntity<Voo> realizarSimulacao(@RequestBody @Valid Simulacao simulacao){
         Voo voo;
-        try{voo = simulacaoServices.consultarVoo(simulacao);}
+        try{voo = simulacaoService.consultarVoo(simulacao);}
         catch (ObjectNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
