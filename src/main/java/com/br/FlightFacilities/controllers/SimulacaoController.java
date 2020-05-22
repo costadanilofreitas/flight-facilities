@@ -23,12 +23,12 @@ public class SimulacaoController {
     private SimulacaoService simulacaoService;
 
     @PutMapping()
-    public ResponseEntity<Optional<Voo>> realizarSimulacao(@RequestBody @Valid Simulacao simulacao){
-        Optional<Voo> vooOptional;
-        try{vooOptional = simulacaoService.consultarVoo(simulacao);}
+    public ResponseEntity<Iterable<Voo>> realizarSimulacao(@RequestBody @Valid Simulacao simulacao){
+        Iterable<Voo> vooIterable;
+        try{vooIterable = simulacaoService.consultarVoo(simulacao);}
         catch (ObjectNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        return ResponseEntity.status(200).body(vooOptional);
+        return ResponseEntity.status(200).body(vooIterable);
     }
 }

@@ -15,12 +15,12 @@ public class SimulacaoService {
     @Autowired
     VooRepository vooRepository;
 
-    public Optional<Voo> consultarVoo(Simulacao simulacao) throws ObjectNotFoundException {
+    public Iterable<Voo> consultarVoo(Simulacao simulacao) throws ObjectNotFoundException {
 
-        Optional<Voo> vooOptional = vooRepository.findByOrigemAndDestino(simulacao.getAeporigem(),simulacao.getAepdestino());
+        Iterable<Voo> vooIterable = vooRepository.findByOrigemAndDestino(simulacao.getAeporigem(),simulacao.getAepdestino());
 
-        if (vooOptional.isPresent()){
-            return vooOptional;
+        if (vooIterable.iterator().hasNext()){
+            return vooIterable;
         }
         throw new ObjectNotFoundException(Voo.class, "Voo não encontrado");
     }
