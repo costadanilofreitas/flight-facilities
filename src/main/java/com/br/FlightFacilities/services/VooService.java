@@ -30,7 +30,7 @@ public class VooService {
             Voo vooObjeto = vooRepository.save(voo);
             return vooObjeto;
         }
-        throw new ObjectNotFoundException(Voo.class, "O voo não foi encontrato");
+        throw new ObjectNotFoundException(Voo.class, "O voo não foi encontrado");
     }
 
     public void deletarVoo(Voo voo) {
