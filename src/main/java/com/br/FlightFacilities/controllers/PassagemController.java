@@ -31,7 +31,7 @@ public class PassagemController {
             return passagemOptional.get();
         }
         else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passagem não encontrada");
         }
     }
 
@@ -53,14 +53,12 @@ public class PassagemController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Passagem> deletarPassagem(@PathVariable Integer id){
-        Optional<Passagem> passagemOptional = passagemService.buscarPassagem(id);
-
-        if(passagemOptional.isPresent()){
-            passagemService.deletarPassagem(passagemOptional.get());
-            return ResponseEntity.status(204).body(passagemOptional.get());
+    public ResponseEntity<String> deletarPassagem(@PathVariable Integer id){
+            try{
+                String retornoDelete = passagemService.deletarPassagem(id);
+                return ResponseEntity.status(200).body(retornoDelete);
+            }catch (Exception ex){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+            }
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
-
 }

@@ -1,12 +1,15 @@
 package com.br.FlightFacilities.services;
 
+import com.br.FlightFacilities.enums.TipoDeTarifa;
 import com.br.FlightFacilities.models.Passagem;
 import com.br.FlightFacilities.models.Voo;
 import com.br.FlightFacilities.repositories.PassagemRepository;
+import net.bytebuddy.utility.RandomString;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -14,8 +17,27 @@ public class PassagemService {
     @Autowired
     PassagemRepository passagemRepository;
 
+    @Autowired
+    VooService vooService;
+
     public Passagem salvarPassagem(Passagem passagem){
-        return passagemRepository.save(passagem);
+        Optional<Voo> vooOptional = vooService.buscarPorId(passagem.getIdVoo());
+
+        if(vooOptional.isPresent()) {
+            if (passagem.getTipoDeTarifa() == TipoDeTarifa.PROMO) {
+                passagem.setValorPassagem(vooOptional.get().getValor()*0.8);
+            }
+            if (passagem.getTipoDeTarifa() == TipoDeTarifa.STAND) {
+                passagem.setValorPassagem(vooOptional.get().getValor());
+            }
+            if (passagem.getTipoDeTarifa() == TipoDeTarifa.FLEX) {
+                passagem.setValorPassagem(vooOptional.get().getValor()*1.1);
+            }
+            passagem.setNumeroAssento(RandomString.make(2));
+            return passagemRepository.save(passagem);
+        }else {
+            throw new ObjectNotFoundException(Passagem.class, "Voo não encontrado! ");
+        }
     }
 
     public Optional<Passagem> buscarPassagem(Integer idPassagem){
@@ -57,8 +79,22 @@ public class PassagemService {
         return passagemRepository.save(passagem);
     }
 
-    public void deletarPassagem(Passagem passagem){
-        passagemRepository.delete(passagem);
-    }
+    public String deletarPassagem(Integer id) {
+        Optional<Passagem> passagemOptional = passagemRepository.findById(id);
 
+        if (passagemOptional.isPresent()) {
+            if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.PROMO) {
+                return "Cancelamento não permitido, tarifa PROMO!";
+            }
+            if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.STAND) {
+                passagemRepository.delete(passagemOptional.get());
+                return "Cancelamento efetuado com multa de 100 reais, tarifa STANDARD! Valor reembolsado: " + (passagemOptional.get().getValorPassagem()-100.0);
+            }
+            if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.FLEX) {
+                passagemRepository.delete(passagemOptional.get());
+                return "Cancelamento efetuado sem multa, tarifa FLEX! Valor reembolsado: " + (passagemOptional.get().getValorPassagem());
+            }
+        }
+        return "Passagem não encontrada!";
+    }
 }
