@@ -39,7 +39,7 @@ public class EmpresaService {
         Optional<Empresa> empresaOptional = empresaRepository.findById(empresa.getIdempresa());
         /*
         if (empresaOptional.isPresent()){
-            Empresa empresaObjeto = empresaRepository.(empresa);
+            Empresa empresaObjeto = empresaRepository.save(empresa);
             return empresaObjeto;
         }
         throw new ObjectNotFoundException(Empresa.class,"empresa não cadastrada");
