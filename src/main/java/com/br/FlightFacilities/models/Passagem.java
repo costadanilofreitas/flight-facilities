@@ -1,6 +1,7 @@
 package com.br.FlightFacilities.models;
 
 import com.br.FlightFacilities.enums.TipoDeTarifa;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@JsonIgnoreProperties(value = {"valorPassagem", "numeroAssento"}, allowSetters = false, allowGetters = true)
 public class Passagem {
 
     @Id
