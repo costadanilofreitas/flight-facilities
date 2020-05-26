@@ -1,12 +1,9 @@
 package com.br.FlightFacilities.controllers;
 
-import com.br.FlightFacilities.models.Simulacao;
-import com.br.FlightFacilities.models.Voo;
+import com.br.FlightFacilities.models.Usuario;
 import com.br.FlightFacilities.security.JWTUtil;
-import com.br.FlightFacilities.services.SimulacaoService;
 import com.br.FlightFacilities.services.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,15 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-@WebMvcTest(SimulacaoController.class)
+@WebMvcTest(UsuarioController.class)
 @Import(JWTUtil.class)
-public class SimulacaoControllerTests {
-
-    @MockBean
-    SimulacaoService simulacaoService;
+public class UsuarioControllerTests {
 
     @MockBean
     UsuarioService usuarioService;
@@ -36,35 +27,28 @@ public class SimulacaoControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    Simulacao simulacao;
-    Voo voo;
+    Usuario usuario;
 
     @BeforeEach
     public void inicializar() {
-         voo = new Voo();
-         simulacao = new Simulacao();
-         voo.setId(1);
-         voo.setIdEmpresa(1);
-         voo.setOrigem("VCP");
-         voo.setDestino("LIS");
-         voo.setAssentosDisponiveis(10);
-         voo.setValor(1500.00);
-         simulacao.setAeporigem("VCP");
-         simulacao.setAepdestino("LIS");
+         usuario = new Usuario();
+         usuario.setId(1);
+         usuario.setEmail("teste@teste.com");
+         usuario.setNome("teste");
+         usuario.setSenha("123");
     }
 
     ObjectMapper mapper = new ObjectMapper();
 
     @Test
     @WithMockUser(username = "teste@gmail.com", password = "teste")
-    public void testarRealizarSimulacao() throws Exception {
-        Iterable<Voo> vooIterable = Arrays.asList(voo);
-        Mockito.when(simulacaoService.consultarVoo(Mockito.any(Simulacao.class))).thenReturn(vooIterable);
+    public void testaCadastrarUsuario() throws Exception {
+        Mockito.when(usuarioService.salvarUsuario(Mockito.any(Usuario.class))).thenReturn(usuario);
 
-        String json = mapper.writeValueAsString(simulacao);
+        String json = mapper.writeValueAsString(usuario);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/simulacao").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.post("/usuarios").contentType(MediaType.APPLICATION_JSON)
                 .content(json))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
                 }
 }
