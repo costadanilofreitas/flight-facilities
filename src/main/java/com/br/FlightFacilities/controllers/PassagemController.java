@@ -17,7 +17,7 @@ public class PassagemController {
     @Autowired
     PassagemService passagemService;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<Passagem> salvarPassagem(@RequestBody @Valid Passagem passagem){
         Passagem passagemRetorno = passagemService.salvarPassagem(passagem);
         return ResponseEntity.status(201).body(passagemRetorno);
@@ -35,7 +35,7 @@ public class PassagemController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public Iterable<Passagem> buscarTodasPassagens(){
         return passagemService.buscarTodasPassagens();
     }
