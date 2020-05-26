@@ -9,6 +9,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -34,7 +35,12 @@ public class PassagemService {
                 passagem.setValorPassagem(vooOptional.get().getValor()*1.1);
             }
             passagem.setNumeroAssento(RandomString.make(2));
-            return passagemRepository.save(passagem);
+            Passagem passagemObjeto = passagemRepository.save(passagem);
+
+            vooOptional.get().setAssentosDisponiveis(vooOptional.get().getAssentosDisponiveis()-1);
+            vooService.atualizarVoo(vooOptional.get());
+
+            return passagemObjeto;
         }else {
             throw new ObjectNotFoundException(Passagem.class, "Voo não encontrado! ");
         }
@@ -74,7 +80,7 @@ public class PassagemService {
                 passagem.setNumeroAssento(passagemData.getNumeroAssento());
             }
         }else{
-            throw new ObjectNotFoundException(Passagem.class, "Passagem não encontrada");
+            throw new ObjectNotFoundException(Passagem.class, "Passagem não encontrada! ");
         }
         return passagemRepository.save(passagem);
     }
@@ -83,15 +89,23 @@ public class PassagemService {
         Optional<Passagem> passagemOptional = passagemRepository.findById(id);
 
         if (passagemOptional.isPresent()) {
+            Optional<Voo> vooOptional = vooService.buscarPorId(passagemOptional.get().getIdVoo());
+
             if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.PROMO) {
                 return "Cancelamento não permitido, tarifa PROMO!";
             }
             if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.STAND) {
                 passagemRepository.delete(passagemOptional.get());
-                return "Cancelamento efetuado com multa de 100 reais, tarifa STANDARD! Valor reembolsado: " + (passagemOptional.get().getValorPassagem()-100.0);
+                vooOptional.get().setAssentosDisponiveis(vooOptional.get().getAssentosDisponiveis()+1);
+                vooService.atualizarVoo(vooOptional.get());
+
+                return "Cancelamento efetuado com multa de 100 reais, tarifa STANDARD! Valor reembolsado: " + (passagemOptional.get().getValorPassagem()-100.00);
             }
             if (passagemOptional.get().getTipoDeTarifa() == TipoDeTarifa.FLEX) {
                 passagemRepository.delete(passagemOptional.get());
+                vooOptional.get().setAssentosDisponiveis(vooOptional.get().getAssentosDisponiveis()+1);
+                vooService.atualizarVoo(vooOptional.get());
+
                 return "Cancelamento efetuado sem multa, tarifa FLEX! Valor reembolsado: " + (passagemOptional.get().getValorPassagem());
             }
         }
