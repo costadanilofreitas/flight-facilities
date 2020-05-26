@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootTest
-public class EmpresaTests {
+public class EmpresaServiceTest {
     @MockBean
     EmpresaRepository empresaRepository;
 
@@ -44,9 +44,12 @@ public class EmpresaTests {
 
 
     @Test
-    public void testarAtualizarVoo(){
+    public void testarAtualizarEmpresa(){
         empresa.setNome("AzuL");
 
+        Optional<Empresa> optionalEmpresa = Optional.of(empresa);
+
+        Mockito.when(empresaRepository.findById(Mockito.any(Integer.class))).thenReturn(optionalEmpresa);
         Mockito.when(empresaRepository.save(Mockito.any(Empresa.class))).thenReturn(empresa);
 
         Empresa emprasaObjeto = empresaService.atualizarEmpresa(empresa);
@@ -80,9 +83,14 @@ public class EmpresaTests {
 
 
     @Test
-    public void testarDeletarVoo(){
+    public void testarDeletarEmpresa(){
+
+        Optional<Empresa> optionalEmpresa = Optional.of(empresa);
+        Mockito.when(empresaRepository.findById(Mockito.any(Integer.class))).thenReturn(optionalEmpresa);
+
         empresaService.deletarEmpresa(4);
-        Mockito.verify(empresaRepository).delete(Mockito.any(Empresa.class));
+        Mockito.verify(empresaRepository,Mockito.times(1)).deleteById(Mockito.anyInt());
+
     }
 
 }
