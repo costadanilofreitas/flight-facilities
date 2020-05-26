@@ -1,6 +1,8 @@
 package com.br.FlightFacilities.controllers;
 
 import com.br.FlightFacilities.models.Voo;
+import com.br.FlightFacilities.security.JWTUtil;
+import com.br.FlightFacilities.services.UsuarioService;
 import com.br.FlightFacilities.services.VooService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
@@ -10,7 +12,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,10 +23,14 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @WebMvcTest(VooController.class)
+@Import(JWTUtil.class)
 public class VooControllerTest {
 
     @MockBean
     VooService vooService;
+
+    @MockBean
+    UsuarioService usuarioService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,6 +51,7 @@ public class VooControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarCadastroDeVoo() throws Exception {
 
         Mockito.when(vooService.salvarVoo(Mockito.any(Voo.class))).thenReturn(voo);
@@ -57,6 +66,7 @@ public class VooControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarBuscarTodosVoos() throws Exception {
 
         Iterable<Voo> vooIterable = Arrays.asList(voo);
@@ -70,6 +80,7 @@ public class VooControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarBuscarVoo() throws Exception {
 
         Optional<Voo> vooOptional = Optional.of(voo);
@@ -83,6 +94,7 @@ public class VooControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarAtualizarVoo() throws Exception {
 
         voo.setValor(1100.0);
@@ -99,6 +111,7 @@ public class VooControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarDeletarVoo() throws Exception {
         vooService.deletarVoo(voo);
 
