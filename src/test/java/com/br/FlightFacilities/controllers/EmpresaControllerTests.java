@@ -1,7 +1,9 @@
 package com.br.FlightFacilities.controllers;
 
 import com.br.FlightFacilities.models.Empresa;
+import com.br.FlightFacilities.security.JWTUtil;
 import com.br.FlightFacilities.services.EmpresaService;
+import com.br.FlightFacilities.services.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +12,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,9 +23,13 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @WebMvcTest(EmpresaController.class)
+@Import(JWTUtil.class)
 public class EmpresaControllerTests {
     @MockBean
     EmpresaService empresaService;
+
+    @MockBean
+    UsuarioService usuarioService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,6 +47,7 @@ public class EmpresaControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarCadastroEmpresa() throws Exception {
 
         Mockito.when(empresaService.salvarEmpresa(Mockito.any(Empresa.class))).thenReturn(empresa);
@@ -53,6 +62,7 @@ public class EmpresaControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarBuscarTodosVoos() throws Exception {
 
         Iterable<Empresa> empresaIterable = Arrays.asList(empresa);
@@ -66,6 +76,7 @@ public class EmpresaControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarBuscarEmpresa() throws Exception {
         Iterable<Empresa> empresaIterable = Arrays.asList(empresa);
 
@@ -78,6 +89,7 @@ public class EmpresaControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarAtualizarEmpresa() throws Exception {
 
         empresa.setNome("Latam Internacional");
@@ -93,6 +105,7 @@ public class EmpresaControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "teste@gmail.com", password = "teste")
     public void testarDeletarVoo() throws Exception {
         empresaService.deletarEmpresa(empresa.getIdempresa());
 
