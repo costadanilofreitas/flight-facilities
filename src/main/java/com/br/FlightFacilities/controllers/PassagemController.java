@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/passagem")
+@RequestMapping("/passagens")
 public class PassagemController {
     @Autowired
     PassagemService passagemService;
