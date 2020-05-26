@@ -32,11 +32,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     COLOCAR ENDPOINTS LIBERADOS NOS ARRAYS ABAIXO
      */
     private static final String[] PUBLIC_MATCHERS_POST = {
-            "/usuarios"
+            "/usuarios",
+            "/empresas/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-
+            "/empresas/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_PUT = {
